@@ -9,15 +9,31 @@ import (
 
 func SignUp(c *gin.Context) {
 	p := new(models.SignUpParam)
-	err := c.ShouldBindJSON(p)
-	if err != nil {
+	if err := c.ShouldBindJSON(p); err != nil {
 		zap.L().Error("param error", zap.Error(err))
+		ResponseError(c, CodeParam)
 		return
 	}
-	err = logic.SignUp(p)
-	if err != nil {
+
+	if err := logic.SignUp(p); err != nil {
 		zap.L().Error("", zap.Error(err))
+		ResponseWithMsg(c, CodeSignUp, err.Error())
 		return
 	}
-	c.JSON(200, gin.H{"msg": "success"})
+	ResponseSuccess(c, nil)
+}
+
+func Login(c *gin.Context) {
+	p := new(models.LoginParam)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("", zap.Error(err))
+		ResponseError(c, CodeParam)
+		return
+	}
+	if err := logic.Login(p); err != nil {
+		zap.L().Error("", zap.Error(err))
+		ResponseError(c, CodeLogin)
+		return
+	}
+	ResponseSuccess(c, nil)
 }

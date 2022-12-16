@@ -1,5 +1,5 @@
 name: "bluebell"
-mode: "debug"
+mode: "dev"
 host: localhost
 port: 8080
 version: "v0.0.1"

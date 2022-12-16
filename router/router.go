@@ -9,6 +9,14 @@ import (
 func Init() *gin.Engine {
 	r := gin.Default()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
-	r.POST("/sign", controller.SignUp)
+	UserGroup(r)
 	return r
+}
+
+func UserGroup(r *gin.Engine) {
+	user := r.Group("user")
+	{
+		user.POST("/sign", controller.SignUp)
+		user.POST("/login", controller.Login)
+	}
 }

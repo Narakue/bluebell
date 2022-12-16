@@ -7,11 +7,13 @@ import (
 	"bluebell/setting"
 	"bluebell/util"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
 )
 
 func main() {
+	gin.SetMode(gin.DebugMode)
 	if err := setting.Init(); err != nil {
 		fmt.Println("init setting fail", err)
 	}
