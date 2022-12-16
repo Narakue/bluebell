@@ -9,7 +9,7 @@ var node *snowflake.Node
 
 func Init(startTime string, machineID int64) (err error) {
 	var st time.Time
-	st, err = time.Parse("2020-01-10", startTime)
+	st, err = time.Parse("2006-01-02", startTime)
 	if err != nil {
 		return err
 	}

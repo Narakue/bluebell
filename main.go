@@ -2,9 +2,8 @@ package main
 
 import (
 	"bluebell/dao/mysql"
-	"bluebell/dao/redis"
 	"bluebell/logger"
-	"bluebell/routers"
+	"bluebell/router"
 	"bluebell/setting"
 	"bluebell/util"
 	"fmt"
@@ -29,14 +28,16 @@ func main() {
 		fmt.Println("init mysql fail", err)
 	}
 	defer mysql.Close()
-	if err := redis.Init(); err != nil {
-		fmt.Println("init redis fail", err)
-	}
-	defer redis.Close()
+	//if err := redis.Init(); err != nil {
+	//	fmt.Println("init redis fail", err)
+	//}
+	//defer redis.Close()
 	if err := util.Init(viper.GetString("start_time"), viper.GetInt64("machine_id")); err != nil {
 		fmt.Println("init snowflake fail", err)
 	}
-	if err := routers.Init(); err != nil {
-		fmt.Println("init routers fail", err)
+	r := router.Init()
+	err := r.Run(fmt.Sprintf("%s:%d", viper.GetString("host"), viper.GetInt("port")))
+	if err != nil {
+		fmt.Println("gin run fail", err)
 	}
 }
