@@ -1,6 +1,7 @@
 package logger
 
 import (
+	"bluebell/controller"
 	"github.com/spf13/viper"
 	"net"
 	"net/http"
@@ -79,7 +80,9 @@ func GinLogger() gin.HandlerFunc {
 		c.Next()
 
 		cost := time.Since(start)
+		uid, _ := controller.GetUserID(c)
 		lg.Info(path,
+			zap.Int64("uid", uid),
 			zap.Int("status", c.Writer.Status()),
 			zap.String("method", c.Request.Method),
 			zap.String("path", path),
@@ -96,6 +99,7 @@ func GinLogger() gin.HandlerFunc {
 func GinRecovery(stack bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
+			uid, _ := controller.GetUserID(c)
 			if err := recover(); err != nil {
 				// Check for a broken connection, as it is not really a
 				// condition that warrants a panic stack trace.
@@ -111,23 +115,26 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
 				if brokenPipe {
 					lg.Error(c.Request.URL.Path,
+						zap.Int64("uid", uid),
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)
 					// If the connection is dead, we can't write a status to it.
-					c.Error(err.(error)) // nolint: errcheck
+					err = c.Error(err.(error)) // nolint: errcheck
 					c.Abort()
 					return
 				}
 
 				if stack {
 					lg.Error("[Recovery from panic]",
+						zap.Int64("uid", uid),
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 						zap.String("stack", string(debug.Stack())),
 					)
 				} else {
 					lg.Error("[Recovery from panic]",
+						zap.Int64("uid", uid),
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)

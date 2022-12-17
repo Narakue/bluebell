@@ -25,7 +25,7 @@ func SignUp(p *models.SignUpParam) error {
 	return nil
 }
 
-func Login(p *models.LoginParam) (token string, err error) {
+func Login(p *models.LoginParam) (aToken string, rToken string, err error) {
 	user := &models.User{Username: p.Username, Password: p.Password}
 	user.Password = encryptPassword(user.Password)
 	res := dao.Login(user)
@@ -33,9 +33,9 @@ func Login(p *models.LoginParam) (token string, err error) {
 		err = errors.New("login fail")
 		return
 	}
-	token, err = util.GenerateToken(user.UserID, user.Password)
+	aToken, rToken, err = util.GenerateToken(user.UserID, user.Password)
 	rdb := redis.GetRdb()
-	rdb.Set(strconv.FormatInt(user.UserID, 10), token, util.ATokenExistTime)
+	rdb.Set(strconv.FormatInt(user.UserID, 10)+util.AToken, aToken, util.ATokenExistTime)
 	return
 }
 

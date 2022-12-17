@@ -37,13 +37,17 @@ func Login(c *gin.Context) {
 		ResponseError(c, CodeParam)
 		return
 	}
-	token, err := logic.Login(p)
+	aToken, rToken, err := logic.Login(p)
 	if err != nil {
 		zap.L().Error("", zap.Error(err))
 		ResponseError(c, CodeLogin)
 		return
 	}
-	ResponseSuccess(c, token)
+	result := map[string]any{
+		"access_token":  aToken,
+		"refresh_token": rToken,
+	}
+	ResponseSuccess(c, result)
 }
 
 func GetUserID(c *gin.Context) (int64, bool) {

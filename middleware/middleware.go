@@ -15,7 +15,7 @@ func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		auth := c.Request.Header.Get("Authorization")
 		if len(auth) == 0 {
-			controller.ResponseError(c, controller.CodeAuthError)
+			controller.ResponseError(c, controller.CodeNotLogin)
 			c.Abort()
 		}
 		auth = strings.Fields(auth)[1]
@@ -39,8 +39,8 @@ func LoginMiddleware() gin.HandlerFunc {
 			c.Abort()
 		}
 		rdb := redis.GetRdb()
-		rToken := rdb.Get(strconv.FormatInt(value, 10))
-		if token != rToken.Val() {
+		rdbToken := rdb.Get(strconv.FormatInt(value, 10) + util.AToken)
+		if token != rdbToken.Val() {
 			controller.ResponseError(c, controller.CodeReLogin)
 			c.Abort()
 		}
