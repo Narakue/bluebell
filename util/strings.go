@@ -1,3 +1,8 @@
 package util
 
-var UserID = "userID"
+import "time"
+
+const (
+	CtxUserID       = "UserID"
+	ATokenExistTime = time.Minute * 10
+)

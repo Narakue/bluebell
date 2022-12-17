@@ -2,11 +2,13 @@ package logic
 
 import (
 	"bluebell/dao"
+	"bluebell/dao/redis"
 	"bluebell/models"
 	"bluebell/util"
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	"strconv"
 )
 
 func SignUp(p *models.SignUpParam) error {
@@ -32,6 +34,8 @@ func Login(p *models.LoginParam) (token string, err error) {
 		return
 	}
 	token, err = util.GenerateToken(user.UserID, user.Password)
+	rdb := redis.GetRdb()
+	rdb.Set(strconv.FormatInt(user.UserID, 10), token, util.ATokenExistTime)
 	return
 }
 

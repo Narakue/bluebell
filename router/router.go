@@ -11,10 +11,8 @@ import (
 func Init() *gin.Engine {
 	r := gin.Default()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
-	r.GET("/ping", middleware.AuthMiddleware(), func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"msg": "success"})
-	})
 	UserGroup(r)
+	TestGroup(r)
 	return r
 }
 
@@ -23,5 +21,15 @@ func UserGroup(r *gin.Engine) {
 	{
 		user.POST("/sign", controller.SignUp)
 		user.POST("/login", controller.Login)
+	}
+}
+
+func TestGroup(r *gin.Engine) {
+	test := r.Group("/test")
+	{
+		test.Use(middleware.AuthMiddleware(), middleware.LoginMiddleware())
+		test.GET("/ping", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{"msg": "success"})
+		})
 	}
 }

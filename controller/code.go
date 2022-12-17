@@ -10,7 +10,8 @@ const (
 	CodeLogin
 	CodeServerBusy
 	CodeNotLogin
-	COdeAuthError
+	CodeAuthError
+	CodeReLogin
 )
 
 var codeMsgMap = map[ResCode]string{
@@ -21,7 +22,8 @@ var codeMsgMap = map[ResCode]string{
 	CodeLogin:      "login error",
 	CodeServerBusy: "server busy",
 	CodeNotLogin:   "not login",
-	COdeAuthError:  "auth error",
+	CodeAuthError:  "auth error",
+	CodeReLogin:    "please re login",
 }
 
 func GetCodeMsg(code ResCode) string {

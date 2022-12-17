@@ -21,6 +21,10 @@ func Init() (err error) {
 	return err
 }
 
+func GetRdb() *redis.Client {
+	return rdb
+}
+
 func Close() {
 	_ = rdb.Close()
 }
