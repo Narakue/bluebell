@@ -23,14 +23,16 @@ func SignUp(p *models.SignUpParam) error {
 	return nil
 }
 
-func Login(p *models.LoginParam) error {
+func Login(p *models.LoginParam) (token string, err error) {
 	user := &models.User{Username: p.Username, Password: p.Password}
 	user.Password = encryptPassword(user.Password)
 	res := dao.Login(user)
 	if !res {
-		return errors.New("login fail")
+		err = errors.New("login fail")
+		return
 	}
-	return nil
+	token, err = util.GenerateToken(user.UserID, user.Password)
+	return
 }
 
 func encryptPassword(password string) string {

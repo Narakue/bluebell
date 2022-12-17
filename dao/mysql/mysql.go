@@ -24,7 +24,8 @@ func Init() error {
 		host,
 		port,
 		database,
-		charset)
+		charset,
+	)
 	db, err := gorm.Open(driverName, args)
 	if err != nil {
 		return err

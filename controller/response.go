@@ -6,7 +6,7 @@ import (
 )
 
 type Response struct {
-	Code int         `json:"code"`
+	Code ResCode     `json:"code"`
 	Msg  interface{} `json:"msg"`
 	Data interface{} `json:"data"`
 }
@@ -19,7 +19,7 @@ func ResponseSuccess(c *gin.Context, data interface{}) {
 	})
 }
 
-func ResponseError(c *gin.Context, code int) {
+func ResponseError(c *gin.Context, code ResCode) {
 	c.JSON(http.StatusOK, &Response{
 		Code: code,
 		Msg:  GetCodeMsg(code),
@@ -27,7 +27,7 @@ func ResponseError(c *gin.Context, code int) {
 	})
 }
 
-func ResponseWithMsg(c *gin.Context, code int, msg interface{}) {
+func ResponseWithMsg(c *gin.Context, code ResCode, msg interface{}) {
 	c.JSON(http.StatusOK, &Response{
 		Code: code,
 		Msg:  msg,
