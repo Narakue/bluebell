@@ -25,6 +25,13 @@ func GetRdb() *redis.Client {
 	return rdb
 }
 
+func MakeZ(score float64, member interface{}) redis.Z {
+	return redis.Z{
+		Score:  score,
+		Member: member,
+	}
+}
+
 func Close() {
 	_ = rdb.Close()
 }

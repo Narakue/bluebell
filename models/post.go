@@ -14,6 +14,7 @@ type Post struct {
 	AuthorID    int64     `json:"author_id,string"`
 	CommunityID int64     `json:"community_id,string"`
 	Status      int       `json:"status"`
+	Score       int       `json:"score"`
 	CreateTime  time.Time `json:"create_time"`
 	UpdateTime  time.Time `json:"update_time"`
 }

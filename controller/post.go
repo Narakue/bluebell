@@ -3,6 +3,7 @@ package controller
 import (
 	"bluebell/logic"
 	"bluebell/models"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"strconv"
 	"time"
@@ -12,6 +13,7 @@ func CreatePost(c *gin.Context) {
 	postParam := new(models.PostParam)
 	err := c.ShouldBindJSON(postParam)
 	if err != nil {
+		fmt.Println(err)
 		ResponseError(c, CodeParam)
 		return
 	}
@@ -64,4 +66,25 @@ func GetPostDetailByID(c *gin.Context) {
 		return
 	}
 	ResponseSuccess(c, apiPostDetail)
+}
+
+func VotePost(c *gin.Context) {
+	voteParam := new(models.VoteParam)
+	err := c.ShouldBindJSON(voteParam)
+	if err != nil {
+		fmt.Println(err)
+		ResponseError(c, CodeParam)
+		return
+	}
+	userID, ok := GetUserID(c)
+	if !ok {
+		ResponseError(c, CodeReLogin)
+		return
+	}
+	err = logic.VotePost(userID, voteParam)
+	if err != nil {
+		ResponseWithMsg(c, CodeError, err)
+		return
+	}
+	ResponseSuccess(c, nil)
 }

@@ -17,3 +17,8 @@ type PostParam struct {
 	Content     string `json:"content" binding:"required"`
 	CommunityID int64  `json:"community_id" binding:"required"`
 }
+
+type VoteParam struct {
+	PostID int64 `json:"post_id,string" binding:"required"`
+	Status *int  `json:"status" binding:"required,oneof=1 0 -1"`
+}
