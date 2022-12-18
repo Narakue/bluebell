@@ -27,10 +27,10 @@ func ResponseError(c *gin.Context, code ResCode) {
 	})
 }
 
-func ResponseWithMsg(c *gin.Context, code ResCode, msg interface{}) {
+func ResponseWithMsg(c *gin.Context, code ResCode, msg error) {
 	c.JSON(http.StatusOK, &Response{
 		Code: code,
-		Msg:  msg,
+		Msg:  msg.Error(),
 		Data: nil,
 	})
 }

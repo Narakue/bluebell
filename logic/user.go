@@ -51,3 +51,7 @@ func encryptPassword(password string) string {
 	sum := h.Sum([]byte(password))
 	return hex.EncodeToString(sum)
 }
+
+func GetUserByID(id int64) (*models.User, error) {
+	return dao.GetUserByID(id)
+}

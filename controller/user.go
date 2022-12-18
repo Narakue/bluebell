@@ -23,7 +23,7 @@ func SignUp(c *gin.Context) {
 
 	if err := logic.SignUp(p); err != nil {
 		zap.L().Error("", zap.Error(err))
-		ResponseWithMsg(c, CodeSignUp, err.Error())
+		ResponseWithMsg(c, CodeSignUp, err)
 		return
 	}
 	ResponseSuccess(c, nil)

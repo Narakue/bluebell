@@ -13,7 +13,8 @@ func Init() *gin.Engine {
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 	UserGroup(r)
 	r.GET("/refreshToken", controller.RefreshToken)
-	r.Use(middleware.AuthMiddleware(), middleware.LoginMiddleware())
+	r.Use(middleware.AuthMiddleware())
+	//r.Use(middleware.LoginMiddleware())
 	CommunityGroup(r)
 	PostGroup(r)
 	TestGroup(r)
@@ -32,7 +33,7 @@ func CommunityGroup(r *gin.Engine) {
 	community := r.Group("/community")
 	{
 		community.GET("/getCommunityList", controller.GetCommunityList)
-		community.GET("/getCommunityDetailByID", controller.GetCommunityDetailByID)
+		community.GET("/communityDetail/:id", controller.GetCommunityDetailByID)
 	}
 }
 
@@ -41,6 +42,7 @@ func PostGroup(r *gin.Engine) {
 	{
 		post.POST("/createPost", controller.CreatePost)
 		post.GET("/getPostList", controller.GetPostList)
+		post.GET("/postDetail/:id", controller.GetPostDetailByID)
 	}
 }
 

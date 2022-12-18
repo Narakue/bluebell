@@ -23,3 +23,10 @@ func Login(user *models.User) (bool, error) {
 	result := db.Where("username = ? and password = ?", user.Username, user.Password).First(user)
 	return result.RowsAffected > 0, result.Error
 }
+
+func GetUserByID(id int64) (*models.User, error) {
+	db := mysql.GetDB()
+	user := &models.User{UserID: id}
+	result := db.Where(user).First(user)
+	return user, result.Error
+}

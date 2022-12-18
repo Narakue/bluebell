@@ -15,6 +15,6 @@ func GetCommunityList() ([]*models.Community, error) {
 func GetCommunityDetailByID(id int64) (*models.Community, error) {
 	db := mysql.GetDB()
 	community := &models.Community{CommunityID: id}
-	result := db.Model(community).First(community)
+	result := db.Where(community).First(community)
 	return community, result.Error
 }

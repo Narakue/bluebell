@@ -15,7 +15,7 @@ func GetCommunityList(c *gin.Context) {
 }
 
 func GetCommunityDetailByID(c *gin.Context) {
-	idStr := c.Query("id")
+	idStr := c.Param("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)
 	if err != nil {
 		ResponseError(c, CodeParam)
@@ -23,7 +23,8 @@ func GetCommunityDetailByID(c *gin.Context) {
 	}
 	community, err := logic.GetCommunityDetailByID(id)
 	if err != nil {
-		ResponseError(c, CodeServerBusy)
+		ResponseWithMsg(c, CodeServerBusy, err)
+		return
 	}
 	ResponseSuccess(c, community)
 }
