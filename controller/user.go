@@ -3,7 +3,6 @@ package controller
 import (
 	"bluebell/logic"
 	"bluebell/models"
-	"bluebell/util"
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
@@ -48,13 +47,4 @@ func Login(c *gin.Context) {
 		"refresh_token": rToken,
 	}
 	ResponseSuccess(c, result)
-}
-
-func GetUserID(c *gin.Context) (int64, bool) {
-	value, exists := c.Get(util.CtxUserID)
-	if !exists {
-		return 0, false
-	} else {
-		return value.(int64), true
-	}
 }

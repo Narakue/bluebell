@@ -12,13 +12,19 @@ import (
 )
 
 func SignUp(p *models.SignUpParam) error {
-	res := dao.CheckoutUserIsExist(p)
+	res, err := dao.CheckoutUserIsExist(p)
+	if err != nil {
+		return err
+	}
 	if res {
 		return errors.New("user already exist")
 	}
 	uid := util.GenID()
 	user := &models.User{UserID: uid, Username: p.Username, Password: encryptPassword(p.Password)}
-	res = dao.InsertUser(user)
+	res, err = dao.InsertUser(user)
+	if err != nil {
+		return err
+	}
 	if !res {
 		return errors.New("user create fail")
 	}
@@ -28,7 +34,7 @@ func SignUp(p *models.SignUpParam) error {
 func Login(p *models.LoginParam) (aToken string, rToken string, err error) {
 	user := &models.User{Username: p.Username, Password: p.Password}
 	user.Password = encryptPassword(user.Password)
-	res := dao.Login(user)
+	res, err := dao.Login(user)
 	if !res {
 		err = errors.New("login fail")
 		return

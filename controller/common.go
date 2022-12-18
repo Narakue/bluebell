@@ -39,3 +39,12 @@ func RefreshToken(c *gin.Context) {
 	}
 	ResponseSuccess(c, gin.H{"access_token": token})
 }
+
+func GetUserID(c *gin.Context) (int64, bool) {
+	value, exists := c.Get(util.CtxUserID)
+	if !exists {
+		return 0, false
+	} else {
+		return value.(int64), true
+	}
+}
