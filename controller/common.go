@@ -4,6 +4,7 @@ import (
 	"bluebell/logic"
 	"bluebell/util"
 	"github.com/gin-gonic/gin"
+	"strconv"
 	"strings"
 )
 
@@ -47,4 +48,18 @@ func GetUserID(c *gin.Context) (int64, bool) {
 	} else {
 		return value.(int64), true
 	}
+}
+
+func getPageInfo(c *gin.Context) (page int, pageSize int, err error) {
+	pageStr := c.Query("page")
+	pageSizeStr := c.Query("page_size")
+	page, err = strconv.Atoi(pageStr)
+	if err != nil {
+		return
+	}
+	pageSize, err = strconv.Atoi(pageSizeStr)
+	if err != nil {
+		return
+	}
+	return
 }

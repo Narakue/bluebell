@@ -38,14 +38,7 @@ func CreatePost(c *gin.Context) {
 }
 
 func GetPostList(c *gin.Context) {
-	pageStr := c.Query("page")
-	pageSizeStr := c.Query("page_size")
-	page, err := strconv.Atoi(pageStr)
-	if err != nil {
-		ResponseError(c, CodeParam)
-		return
-	}
-	pageSize, err := strconv.Atoi(pageSizeStr)
+	page, pageSize, err := getPageInfo(c)
 	if err != nil {
 		ResponseError(c, CodeParam)
 		return
