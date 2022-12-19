@@ -2,11 +2,6 @@ package models
 
 import "time"
 
-const (
-	StatusExist  = 0
-	StatusDelete = 1
-)
-
 type Post struct {
 	PostID      int64     `json:"post_id,string"`
 	Title       string    `json:"title"`

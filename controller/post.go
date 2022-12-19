@@ -53,6 +53,24 @@ func GetPostList(c *gin.Context) {
 	ResponseSuccess(c, postList)
 }
 
+func GetPostListFilter(c *gin.Context) {
+	p := &models.PostListParam{
+		Page:     0,
+		PageSize: 10,
+		Order:    models.OrderTime,
+	}
+	err := c.ShouldBindQuery(p)
+	if err != nil {
+		ResponseError(c, CodeParam)
+	}
+	list, err := logic.GetPostListFilter(p)
+	if err != nil {
+		ResponseWithMsg(c, CodeError, err)
+		return
+	}
+	ResponseSuccess(c, list)
+}
+
 func GetPostDetailByID(c *gin.Context) {
 	idStr := c.Param("id")
 	id, err := strconv.ParseInt(idStr, 10, 64)

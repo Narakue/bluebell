@@ -42,6 +42,7 @@ func PostGroup(r *gin.Engine) {
 	{
 		post.POST("/createPost", controller.CreatePost)
 		post.GET("/getPostList", controller.GetPostList)
+		post.GET("/getPostListFilter", controller.GetPostListFilter)
 		post.GET("/postDetail/:id", controller.GetPostDetailByID)
 		post.POST("/votePost", controller.VotePost)
 	}

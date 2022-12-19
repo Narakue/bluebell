@@ -31,6 +31,11 @@ func GetPostList(page, pageSize int) ([]*models.Post, error) {
 	return postList, err
 }
 
+func GetPostListFilter(postListParam *models.PostListParam) (postList []*models.Post, err error) {
+	postList, err = dao.GetPostListFilter(postListParam)
+	return
+}
+
 func GetPostDetailByID(id int64) (apiPostDetail *models.ApiPostDetail, err error) {
 	post, err := dao.GetPostDetailByID(id)
 	if err != nil {
@@ -58,6 +63,9 @@ func GetScoreByPostID(id int64) (score int, err error) {
 		return
 	}
 	score, err = dao.GetScoreByPostID(id)
+	if score < 0 {
+		score = 0
+	}
 	return
 }
 
